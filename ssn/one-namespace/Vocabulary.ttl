@@ -138,7 +138,7 @@ ssn:hasValue a owl:DatatypeProperty ;
 ssn:hostedBy a owl:ObjectProperty ;
   rdfs:label "hosted by"@en ;
   rdfs:comment """Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."""@en ;
-  skos:definition """Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."""@en
+  skos:definition """Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Actuator ;
   <http://meta.schema.org/domainIncludes> ssn:Sensor ;
   <http://meta.schema.org/rangeIncludes> ssn:Platform ;

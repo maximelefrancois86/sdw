@@ -4,19 +4,19 @@ This document lists the steps to put sosa and ssn under a single namespace, and 
 
 From the `dependencies.png` image, I shall start with `sosa-core`.
 
-## Endpoints serving a document where resource `ssn:Vocabulary` is defined
+## The `sosa-core` --> `ssn:Vocabulary`
 
 Code name `sosa-core`.
 
 ISSUE: where is `sosa-core` ? ok I guess it's file `sosa.ttl`
-
-ACTION: copy `sosa.ttl` to `one-namespace`
 
 ACTION: choose a URI for this document: `ssn:Vocabulary`
 
 ACTION: rename `sosa.ttl` with the localName of its URI: `ssn:Vocabulary`
 
 ACTION: add server specification for serving `ssn:Vocabulary` in `specifications.md`
+
+### Prefixes section
 
 ISSUE: why does `sosa-core` imports http://schema.org/ in `dependencies.png` ? There is no OWL ontology at http://schema.org/. _Action: removed this line_
 
@@ -46,10 +46,11 @@ ISSUE: the registered prefix at prefix.cc for http://purl.org/dc/terms/ is not `
 
 ISSUE: the `xhtm` prefix is not used. _Action: remove_
 
+### "Soft imports" section, and ontology metadata
+
 ACTION: make the list of term declaration more concise
 
 ISSUE: The recommended annotation is not `dc:date` but `dcterms:modified` and `dcterms:issued`. _Action: remove declaration for `dc:date`, and add metadata `dcterms:modified` and `dcterms:issued`.
-
 
 ISSUE: The title metadata for an Ontology should not be `rdfs:label` but `dcterms:title`. _Action: declare `dcterms:title` change_
 
@@ -91,8 +92,9 @@ ISSUE: `skos` should be used as a "soft import", i.e., just use the terms we nee
 
 ISSUE: The title and description metadata for the Ontology and any term should have a language tag. _Action: add @en tag_.
 
-ACTION: Adding by default multiline capability for objects of `rdfs:comment`, `skos:definition`, `skos:note`, `skos:example` (i.e., with three double quotes)
+### Terms
 
+ACTION: Adding by default multiline capability for objects of `rdfs:comment`, `skos:definition`, `skos:note`, `skos:example` (i.e., with three double quotes)
 
 ISSUE: The definition of observation and actuation should be parallel. _Action: none_.
 
@@ -128,6 +130,10 @@ ISSUE: where is the link between a sensor/actuator and the procedure it implemen
 
 ISSUE: where is sensing and acting/actuating ?
 
-PROPOSAL: could we define a super-class of Actuation and Observation named ProcedureExecution ?
+ISSUE: where is the link between the actuation and the property it acted on ?
 
-PROPOSAL: could we define a super-class of Actuator and Sensor named ProcedureExecutor ?
+ISSUE: where is the link between the actuator and the property it acts on ?
+
+PROPOSAL: could we define a super-class of Actuation and Observation _Proposal: ProcedureExecution_ ?
+
+PROPOSAL: could we define a super-class of Actuator and Sensor ? _Proposal: ProcedureExecutor_ ?
