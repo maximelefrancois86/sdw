@@ -4,6 +4,9 @@ This document lists the steps to put sosa and ssn under a single namespace, and 
 
 From the `dependencies.png` image, I shall start with `sosa-core`.
 
+Issues encoutered in sosa-core are listed in Vocabulary-comments.md
+
+
 ## The `sosa-core` --> `ssn:Vocabulary`
 
 Code name `sosa-core`.
@@ -134,6 +137,10 @@ ISSUE: where is the link between the actuation and the property it acted on ?
 
 ISSUE: where is the link between the actuator and the property it acts on ?
 
+ISSUE: why is there invokedBy, but nothing that links an observation to the sensor that made it ?
+
 PROPOSAL: could we define a super-class of Actuation and Observation _Proposal: ProcedureExecution_ ?
 
 PROPOSAL: could we define a super-class of Actuator and Sensor ? _Proposal: ProcedureExecutor_ ?
+
+## The `sosa-sam` -->

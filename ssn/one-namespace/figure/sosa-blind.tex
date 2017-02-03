@@ -1,0 +1,137 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+\usepackage[T3,T1]{fontenc}
+
+
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% Style packages
+\usepackage{helvet}
+\usepackage{pifont}
+\usepackage{amsmath,amsfonts,mathabx,stmaryrd}
+\usepackage{color,xcolor}
+\usepackage{calculator}
+\DeclareUnicodeCharacter{20AC}{\euro}
+\usepackage{url}
+\usepackage{xspace}
+
+\usepackage[active,tightpage]{preview}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+\usetikzlibrary{trees}
+
+
+\begin{tikzpicture}[
+  ssn/.style={color=black!60!green},
+  ssnr/.style={color=black!60!green},
+  ssnl/.style={scale=0.8,color=black!60!green},
+  sosa/.style={color=black!60!blue},
+  sosar/.style={color=black!60!blue},
+  sosal/.style={scale=0.8,color=black!60!blue},
+  first/.style={level distance=6ex},
+  second/.style={level distance=12ex},
+  third/.style={level distance=18ex},
+  level 1/.style={sibling distance=5em}]
+
+  % ProcedureExecution
+  \draw[style=dotted] (-2,-1) rectangle (2,1);
+  \node[sosa] (Actuation) at (0,.5) {ssn\string:Actuation} ;
+  \node[sosa] (Observation) at (0,-.5) {ssn\string:Observation} ;
+
+  % ProcedureExecutor
+  \draw[style=dotted] (6,-1) rectangle (10,1);
+  \node[sosa] (Actuator) at (8,.5) {ssn\string:Actuator} ;
+  \node[sosa] (Sensor) at (8,-.5) {ssn\string:Sensor} ;
+
+  % ProcedureExecution to ProcedureExecutor
+  \draw[sosar] (Actuation) to[bend left=3]
+    node[sosal,below] {$\blacktriangleleft$ ssn\string:invokes }
+    node[sosal,above] {ssn\string:invokedBy $\blacktriangleright$}
+  (Actuator);
+
+  \draw[sosar] (Observation) to[bend right=3]
+    node[sosal,below] {$\blacktriangleleft$ ssn\string:madeObservation }
+  (Sensor);
+
+  % Procedure
+  \node[sosa] (Procedure) at (4,4) {ssn\string:Procedure} ;
+
+  % ProcedureExecution to Procedure
+  \draw[sosar] (0,1) to[bend left=10]
+    node[sosal,above,sloped] {ssn\string:usedProcedure $\blacktriangleright$}
+  (Procedure);
+
+  % ProcedureExecution to phenomenonTime
+  \node[color=black] (Thing) at (-6,1.2) {owl:Thing} ;
+  \draw[sosar] (-2,0.6) to[bend right=10]
+    node[sosal,above,sloped] {$\blacktriangleleft$ ssn\string:phenomenonTime }
+  (Thing);
+
+  % ProcedureExecution to result
+  \node[sosa] (Result) at (-6,-1) {ssn:Result} ;
+  \draw[sosar] (-2,-0.6) to[bend left=10]
+    node[sosal,below,sloped] {$\blacktriangleleft$ ssn\string:hasResult }
+    node[sosal,above,sloped] {ssn\string:isResultOf $\blacktriangleright$ }
+  (Result);
+
+
+  % Result time and value
+  \node[color=black] (Literal) at (-10,0) {rdfs:Literal} ;
+  \draw[sosar] (Result) to[bend right=10]
+    node[sosal,above,sloped] {$\blacktriangleleft$ ssn\string:resultTime }
+  (Literal);
+
+  \node[color=black] (Literal2) at (-10,-2) {rdfs:Literal} ;
+  \draw[sosar] (Result) to[bend left=10]
+    node[sosal,above,sloped] {$\blacktriangleleft$ ssn\string:hasValue }
+  (Literal2);
+
+
+  % Platform
+  \node[color=black] (Platform) at (8,5) {ssn:Platform} ;
+  \draw[sosar] (8,1) to
+    node[sosal,right,pos=.4] {$\blacktriangledown$ ssn\string:hostedBy }
+    node[sosal,right,pos=.6] {$\blacktriangleup$ ssn\string:hosts }
+  (Platform);
+
+
+
+  % FeatureOfInterest and Sample
+  \draw[style=dotted] (-4,-8) rectangle (1,-5);
+  \node[sosa,anchor=north west] (FeatureOfInterest) at (-4,-5.5) {ssn\string:FeatureOfInterest} ;
+  \node[sosa,anchor=south east] (Sample) at (1,-8) {ssn\string:Sample} ;
+
+  \draw[sosar] (FeatureOfInterest) to[bend right = 20]
+    node[sosal,left,pos=0.35] { ssn\string:isSampleOf $\blacktriangledown$}
+    node[sosal,left,pos=0.65] { ssn\string:hasSample $\blacktriangleup$}
+  (Sample);
+
+
+  \draw[sosar,bend right=2] (FeatureOfInterest) to[bend left=10]
+    node[sosal,above,sloped] {isFeatureOfInterestOf $\blacktriangleright$}
+  ($(Observation.south)+(-0.1,0)$) ;
+
+  \draw[sosa,bend right=2] (-1.9,-5) to[bend left=10]
+    node[sosal,below,sloped] {$\blacktriangleleft$ hasFeatureOfInterest}
+  ($(Observation.south)+(0.1,0)$) ;
+
+  % Observable Property
+  \node[sosa,anchor=north west] (ObservableProperty) at (9.5,-5.5) {ssn\string:ObservableProperty} ;
+  \draw[sosar] (Observation) to[bend right=10]
+    node[sosal,below,sloped] {observedProperty $\blacktriangleright$}
+  (ObservableProperty);
+
+  \draw[sosar] (Sensor) to[bend right=10]
+    node[sosal,left,pos=0.45] {isObservedBy $\blacktriangleup$}
+    node[sosal,left,pos=0.55] {observes $\blacktriangledown$}
+  (ObservableProperty);
+
+
+
+\end{tikzpicture}
+\end{document}
