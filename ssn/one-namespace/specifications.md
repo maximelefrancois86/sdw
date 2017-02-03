@@ -87,3 +87,28 @@ Same as http://www.w3.org/ns/ssn/Vocabulary.ttl, but:
 ### Endpoint http://www.w3.org/ns/ssn/Vocabulary.html
 
 Exists only if every module has its own documentation.
+
+
+
+### Redirections for terms
+
+A GET to any of the following URIs should be answered as follows:
+
+```
+303 See Also
+Location: http://www.w3.org/ns/ssn/Vocabulary
+```
+
+
+```
+http://www.w3.org/ns/ssn/FeatureOfInterest
+http://www.w3.org/ns/ssn/ObservableProperty
+http://www.w3.org/ns/ssn/Sensor
+http://www.w3.org/ns/ssn/Actuator
+http://www.w3.org/ns/ssn/Observation
+http://www.w3.org/ns/ssn/Actuation
+http://www.w3.org/ns/ssn/Sample
+http://www.w3.org/ns/ssn/isSampleOf
+...
+
+```
