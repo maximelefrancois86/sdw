@@ -1,1 +1,7 @@
 .DS_Store
+**/*.bat
+**/*.aux
+**/*.dvi
+**/*.fdb_latexmk
+**/*.fls
+**/*.log
