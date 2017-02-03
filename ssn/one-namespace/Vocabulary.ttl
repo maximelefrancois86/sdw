@@ -33,14 +33,14 @@ vs:term_status a owl:AnnotationProperty .
 <http://meta.schema.org/rangeIncludes> a owl:AnnotationProperty .
 
 ssn:Vocabulary a voaf:Vocabulary, owl:Ontology ;
-  dcterms:title "Sensor, Observation, Sample, and Actuator (SOSA) Core Ontology" ;
+  dcterms:title "Sensor, Observation, Sample, and Actuator (SOSA) Core Ontology"@en ;
   dcterms:description """This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group."""@en ;
   dcterms:creator [] ;
   dcterms:contributor <http://maxime-lefrancois.info/me#> ;
   dcterms:issued "2017-01-05"^^xsd:date ;
   dcterms:modified "2017-02-03"^^xsd:date ;
   dcterms:rights [] ;
-  cc:licence [] ;
+  cc:licence <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
   vann:preferredNamespacePrefix "ssn" ;
   vann:preferredNamespaceUri "http://www.w3.org/ns/ssn/" ;
   owl:versionInfo """This version is based on the horizontal/vertical modularization proposed in the W3C/OGC Spatial Data on the Web Working Group: http://w3c.github.io/sdw/ssn/#modularisation"""@en .
@@ -48,44 +48,54 @@ ssn:Vocabulary a voaf:Vocabulary, owl:Ontology ;
 ssn:Actuation a rdfs:Class , owl:Class ;
   rdfs:label "Actuation"@en ;
   rdfs:comment """An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."""@en ;
-  skos:definition """An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."""@en .
+  skos:definition """An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:Actuator a rdfs:Class , owl:Class ;
   rdfs:label "Actuator"@en ;
   rdfs:comment """A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."""@en ;
-  skos:definition """A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."""@en .
+  skos:definition """A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:FeatureOfInterest a rdfs:Class , owl:Class ;
   rdfs:label "Feature Of Interest"@en ;
   rdfs:comment """The feature whose ObservableProperty is being observed by a Sensor to arrive at a Result."""@en ;
   skos:definition """The feature whose ObservableProperty is being observed by a Sensor to arrive at a Result."""@en ;
-  skos:example "For example, when measuring the height of a tree, the height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest."@en .
+  skos:example "For example, when measuring the height of a tree, the height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest."@en ;
+  dcterms:source """skos:exactMatch 'feature' [O&M]
+    http://www.opengeospatial.org/standards/om""" ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:ObservableProperty a rdfs:Class , owl:Class ;
   rdfs:label "Observable Property"@en ;
   rdfs:comment """An observable Quality of a Thing; typically of a FeatureOfInterest."""@en ;
-  skos:definition """An observable Quality of a Thing; typically of a FeatureOfInterest."""@en .
+  skos:definition """An observable Quality of a Thing; typically of a FeatureOfInterest."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:Observation a rdfs:Class , owl:Class ;
   rdfs:label "Observation"@en ;
   rdfs:comment """Activity of carrying out an (Observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Platform or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with. The Result is the output of the observation."""@en ;
-  skos:definition """Activity of carrying out an (Observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Platform or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with. The Result is the output of the observation."""@en .
+  skos:definition """Activity of carrying out an (Observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Platform or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with. The Result is the output of the observation."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:Platform a rdfs:Class , owl:Class ;
   rdfs:label "Platform"@en ;
   rdfs:comment """A device, (computational) system, or agent (including humans). A platform carries at least one Sensor, Actuator, or Sampling Device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."""@en ;
-  skos:definition """A device, (computational) system, or agent (including rdf:type rdfs:Class, owl:Class humans). A platform carries at least one Sensor, Actuator, or Sampling Device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."""@en .
+  skos:definition """A device, (computational) system, or agent (including rdf:type rdfs:Class, owl:Class humans). A platform carries at least one Sensor, Actuator, or Sampling Device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:Procedure a rdfs:Class , owl:Class ;
   rdfs:label "Procedure"@en ;
   rdfs:comment """A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many observations, samplings, or actuations. It explains the steps to be carried out to arrive at reproducible results."""@en ;
   skos:definition """A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many observations, samplings, or actuations. It explains the steps to be carried out to arrive at reproducible results."""@en ;
-  skos:note """Many observations may be created via the same Procedure the same way as many tables are assembled using the same instructions (as information objects, not their concrete realization)."""@en .
+  skos:note """Many observations may be created via the same Procedure the same way as many tables are assembled using the same instructions (as information objects, not their concrete realization)."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:Result a rdfs:Class , owl:Class ;
   rdfs:label "Result"@en ;
   rdfs:comment """The Result of an Observation, Actuation, or Sampling. Such result can, for instance, store an observation's value via the hasValue property, e.g., the value for an ObservedProperty of some FeatureOfInterest such as 20m for the height of a tree."""@en ;
-  skos:definition """The Result of an Observation, Actuation, or Sampling. Such result can, for instance, store an observation's value via the hasValue property, e.g., the value for an ObservedProperty of some FeatureOfInterest such as 20m for the height of a tree."""@en .
+  skos:definition """The Result of an Observation, Actuation, or Sampling. Such result can, for instance, store an observation's value via the hasValue property, e.g., the value for an ObservedProperty of some FeatureOfInterest such as 20m for the height of a tree."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:Sample a rdfs:Class , owl:Class ;
   rdfs:label "Sample"@en ;
@@ -95,12 +105,14 @@ ssn:Sample a rdfs:Class , owl:Class ;
 A Sample is intended to sample some FeatureOfInterest in an application domain, so there is an expectation of at least one sampledFeature property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features."""@en ;
   skos:definition """Feature on which Observations may be made, which is intended to be representative of a FeatureOfInterest that is not fully accessible."""@en ;
   skos:example """A 'station' is essentially an identifiable locality where a sensor system or Process may be deployed and an observation made. In the context of the observation model, it connotes the 'world in the vicinity of the station', so the observed properties relate to the physical medium at the station, and not to any physical artifact such as a mooring, buoy, benchmark, monument, well, etc."""@en ;
-  skos:note """A transient sample, such as a ships-track or flight-line, might be identified and described, but is unlikely to be revisited exactly."""@en .
+  skos:note """A transient sample, such as a ships-track or flight-line, might be identified and described, but is unlikely to be revisited exactly."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:Sensor a rdfs:Class , owl:Class ;
   rdfs:label "Sensor"@en ;
   rdfs:comment """Device, agent (including humans), or software (simulation) involved in, or implementing, a (Sensing) Procedure. Sensors respond to a stimulus, e.g., a change in the environment, and generate a Result. Sensors can be mounted on Platforms, e.g., a modern smart phone hosts multiple sensors."""@en ;
-  skos:definition """Device, agent (including humans), or software (simulation) involved in, or implementing, a (Sensing) Procedure. Sensors respond to a stimulus, e.g., a change in the environment, and generate a Result. Sensors can be mounted on Platforms, e.g., a modern smart phone hosts multiple sensors."""@en .
+  skos:definition """Device, agent (including humans), or software (simulation) involved in, or implementing, a (Sensing) Procedure. Sensors respond to a stimulus, e.g., a change in the environment, and generate a Result. Sensors can be mounted on Platforms, e.g., a modern smart phone hosts multiple sensors."""@en ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:hasFeatureOfInterest a owl:ObjectProperty ;
   rdfs:label "has feature of interest"@en ;
@@ -110,7 +122,8 @@ ssn:hasFeatureOfInterest a owl:ObjectProperty ;
   <http://meta.schema.org/domainIncludes> ssn:Observation ;
   <http://meta.schema.org/rangeIncludes> ssn:FeatureOfInterest ;
   <http://meta.schema.org/rangeIncludes> ssn:Sample ;
-  owl:inverseOf ssn:isFeatureOfInterestOf .
+  owl:inverseOf ssn:isFeatureOfInterestOf ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:hasResult a owl:ObjectProperty ;
   rdfs:label "has result"@en ;
@@ -119,21 +132,24 @@ ssn:hasResult a owl:ObjectProperty ;
   <http://meta.schema.org/domainIncludes> ssn:Actuation ;
   <http://meta.schema.org/domainIncludes> ssn:Observation ;
   <http://meta.schema.org/rangeIncludes> ssn:Result ;
-  owl:inverseOf ssn:isResultOf .
+  owl:inverseOf ssn:isResultOf ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:hasSample a owl:ObjectProperty ;
   rdfs:label "has sample"@en ;
   rdfs:comment """Relation between a FeatureOfInterest and the Sample used to represent it."""@en ;
   skos:definition """Relation between a FeatureOfInterest and the Sample used to represent it."""@en ;  <http://meta.schema.org/domainIncludes> ssn:FeatureOfInterest ;
   <http://meta.schema.org/rangeIncludes> ssn:Sample ;
-  owl:inverseOf ssn:isSampleOf .
+  owl:inverseOf ssn:isSampleOf ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:hasValue a owl:DatatypeProperty ;
   rdfs:label "has value"@en ;
   rdfs:comment """The value of a Result, e.g., 23 or true."""@en ;
   skos:definition """The value of a Result"""@en ;
   skos:example """23 or true"""@en ;
-  <http://meta.schema.org/domainIncludes> ssn:Result .
+  <http://meta.schema.org/domainIncludes> ssn:Result ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:hostedBy a owl:ObjectProperty ;
   rdfs:label "hosted by"@en ;
@@ -142,7 +158,8 @@ ssn:hostedBy a owl:ObjectProperty ;
   <http://meta.schema.org/domainIncludes> ssn:Actuator ;
   <http://meta.schema.org/domainIncludes> ssn:Sensor ;
   <http://meta.schema.org/rangeIncludes> ssn:Platform ;
-  owl:inverseOf ssn:hosts .
+  owl:inverseOf ssn:hosts ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:hosts a owl:ObjectProperty ;
   rdfs:label "hosts"@en ;
@@ -151,7 +168,8 @@ ssn:hosts a owl:ObjectProperty ;
   skos:definition "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
   <http://meta.schema.org/domainIncludes> ssn:Platform ;
   <http://meta.schema.org/rangeIncludes> ssn:Actuator ;
-  <http://meta.schema.org/rangeIncludes> ssn:Sensor .
+  <http://meta.schema.org/rangeIncludes> ssn:Sensor ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:invokedBy a owl:ObjectProperty ;
   rdfs:label "invoked by"@en ;
@@ -159,14 +177,16 @@ ssn:invokedBy a owl:ObjectProperty ;
   skos:definition """Relation linking an Actuation to the Actuator that made that Actuation."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Actuation ;
   <http://meta.schema.org/rangeIncludes> ssn:Actuator ;
-  owl:inverseOf ssn:invokes .
+  owl:inverseOf ssn:invokes ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:invokes a owl:ObjectProperty ;
   rdfs:label "invokes"@en ;
   rdfs:comment """Relation between an Actuator and the Actuation it has made."""@en ;
   skos:definition """Relation between an Actuator and the Actuation it has made."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Actuator ;
-  <http://meta.schema.org/rangeIncludes> ssn:Actuation .
+  <http://meta.schema.org/rangeIncludes> ssn:Actuation ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:isFeatureOfInterestOf a owl:ObjectProperty ;
   rdfs:label "is feature of interest of"@en ;
@@ -174,7 +194,8 @@ ssn:isFeatureOfInterestOf a owl:ObjectProperty ;
   skos:definition """A relation between a FeatureOfInterest and an Observation about it."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:FeatureOfInterest ;
   <http://meta.schema.org/rangeIncludes> ssn:Observation ;
-  owl:inverseOf ssn:hasFeatureOfInterest .
+  owl:inverseOf ssn:hasFeatureOfInterest ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:isObservedBy a owl:ObjectProperty ;
   rdfs:label "is observed by"@en ;
@@ -182,7 +203,8 @@ ssn:isObservedBy a owl:ObjectProperty ;
   skos:definition """Relation between an ObservableProperty and the Sensor able to observe it."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:ObservableProperty ;
   <http://meta.schema.org/rangeIncludes> ssn:Sensor ;
-  owl:inverseOf ssn:observes .
+  owl:inverseOf ssn:observes ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:isResultOf a owl:ObjectProperty ;
   rdfs:label "is result of"@en ;
@@ -191,7 +213,8 @@ ssn:isResultOf a owl:ObjectProperty ;
   <http://meta.schema.org/domainIncludes> ssn:Result ;
   <http://meta.schema.org/rangeIncludes> ssn:Actuation ;
   <http://meta.schema.org/rangeIncludes> ssn:Observation ;
-  owl:inverseOf ssn:hasResult .
+  owl:inverseOf ssn:hasResult ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:isSampleOf a owl:ObjectProperty ;
   rdfs:label "is sample of"@en ;
@@ -199,21 +222,24 @@ ssn:isSampleOf a owl:ObjectProperty ;
   skos:definition """Relation from a Sample to the FeatureOfInterest that it is intended to be representative of."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Sample ;
   <http://meta.schema.org/rangeIncludes> ssn:FeatureOfInterest ;
-  owl:inverseOf ssn:hasSample .
+  owl:inverseOf ssn:hasSample ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:madeObservation a owl:ObjectProperty ;
   rdfs:label "made observation"@en ;
   rdfs:comment """Relation between a Sensor and an Observation it has made."""@en ;
   skos:definition """Relation between a Sensor and an Observation it has made."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Sensor ;
-  <http://meta.schema.org/rangeIncludes> ssn:Observation .
+  <http://meta.schema.org/rangeIncludes> ssn:Observation ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:observedProperty a owl:ObjectProperty ;
   rdfs:label "observed property"@en ;
   rdfs:comment """Relation linking an Observation to the Property that was observed. The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation."""@en ;
   skos:definition """Relation linking an Observation to the Property that was observed. The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Observation ;
-  <http://meta.schema.org/rangeIncludes> ssn:ObservableProperty .
+  <http://meta.schema.org/rangeIncludes> ssn:ObservableProperty ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:observes a owl:ObjectProperty ;
   rdfs:label "observes"@en ;
@@ -221,14 +247,16 @@ ssn:observes a owl:ObjectProperty ;
   skos:definition """Relation between a Sensor and an ObservableProperty that it is capable of sensing."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Sensor ;
   <http://meta.schema.org/rangeIncludes> ssn:ObservableProperty ;
-  owl:inverseOf ssn:isObservedBy .
+  owl:inverseOf ssn:isObservedBy ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:phenomenonTime a owl:ObjectProperty ;
   rdfs:label "phenomenon time"@en ;
   rdfs:comment """The time that the Result of an Observation/Actuation applies to the FeatureOfInterest. Not necessarily the same as the result-time. May be an interval or an instant, or some other compound temporal entity."""@en ;
   skos:definition """The time that the Result of an Observation/Actuation applies to the FeatureOfInterest. Not necessarily the same as the result-time. May be an interval or an instant, or some other compound temporal entity."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Actuation ;
-  <http://meta.schema.org/domainIncludes> ssn:Observation .
+  <http://meta.schema.org/domainIncludes> ssn:Observation ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:resultTime a owl:DatatypeProperty ;
   rdfs:label "result time"@en ;
@@ -236,7 +264,8 @@ ssn:resultTime a owl:DatatypeProperty ;
   skos:definition "The result time is the time when the Observation or Actuation act was completed."@en ;
   rdfs:range xsd:dateTime ;
   <http://meta.schema.org/domainIncludes> ssn:Actuation ;
-  <http://meta.schema.org/domainIncludes> ssn:Observation .
+  <http://meta.schema.org/domainIncludes> ssn:Observation ;
+  rdfs:isDefinedBy ssn:Vocabulary .
 
 ssn:usedProcedure a owl:ObjectProperty ;
   rdfs:label "used procedure"@en ;
@@ -244,4 +273,5 @@ ssn:usedProcedure a owl:ObjectProperty ;
   skos:definition """Relation to link to a re-usable Procedure used in making an Observation or Actuation. Typically a sensor or sensor-system, algorithm, computational Process."""@en ;
   <http://meta.schema.org/domainIncludes> ssn:Actuation ;
   <http://meta.schema.org/domainIncludes> ssn:Observation ;
-  <http://meta.schema.org/rangeIncludes> ssn:Procedure .
+  <http://meta.schema.org/rangeIncludes> ssn:Procedure ;
+  rdfs:isDefinedBy ssn:Vocabulary .

@@ -143,4 +143,62 @@ PROPOSAL: could we define a super-class of Actuation and Observation _Proposal: 
 
 PROPOSAL: could we define a super-class of Actuator and Sensor ? _Proposal: ProcedureExecutor_ ?
 
-## The `sosa-sam` -->
+ISSUE: no `rdfs:isDefinedBy` axiom. _Action: add them_
+
+
+## The `sosa-prov` alignment
+
+Code name `sosa-prov`.
+
+ACTION: choose a URI for this document: `ssn:ProvAlignment`
+
+ACTION: rename `sosa-prov.ttl` with the localName of its URI: `ssn:ProvAlignment`
+
+TODO: add server specification for serving `ssn:ProvAlignment` in `specifications.md`
+
+not many issues there.
+
+
+## The `ssn-new` without DUL --> `ssn:Ontology`
+
+Code name `ssn-new`.
+
+ACTION: choose a URI for this document: `ssn:Ontology`
+
+ACTION: rename `ssn.ttl` with the localName of its URI: `ssn:Ontology`
+
+ACTION: add server specification for serving `ssn:Ontology` in `specifications.md`
+
+### Prefixes section
+
+ISSUE: why does `sosa-core` imports http://schema.org/ in `dependencies.png` ? There is no OWL ontology at http://schema.org/. _Action: removed this line_
+
+ISSUE: ontology comments are typed by `xsd:string`. _Action: changed to @en_
+
+ISSUE: licence is outdated. _Action: changed to http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document_
+
+ACTION: updated rights
+
+ACTION: changed one comment to a dcterms description
+
+ACTION: changed the modification date
+
+
+ISSUE: seeAlso point to the SSN_Skeleton, should be removed.
+
+ISSUE: rdfs:isDefinedBy are strings, not IRIs. _Action: change, unless the term is defined in SOSA. If such is the case, delete._
+
+### FeatureOfInterest
+
+ISSUE: FeatureOfInterest is defined in sosa. _Action: remove anything that is in common, move source to sosa,
+
+ISSUE: seeAlso point to the old SSNX. _Action: remove_
+
+ISSUE: comment is not the same as in SOSA.
+
+PROPOSAL: the comments there should only reflect the additional semantics that SSN adds.
+
+
+## Example of additional modularity
+
+I will move some concepts such as Precision, Accuracy, etc., to a new module. For fun.
