@@ -1,0 +1,369 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix meta: <http://meta.schema.org/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@base <http://www.w3.org/ns/sosa/> .
+
+voaf:Vocabulary a owl:Class .
+dcterms:title a owl:AnnotationProperty .
+dcterms:description a owl:AnnotationProperty .
+dcterms:rights a owl:AnnotationProperty .
+dcterms:issued a owl:AnnotationProperty .
+dcterms:modified a owl:AnnotationProperty .
+dcterms:creator a owl:AnnotationProperty .
+dcterms:contributor a owl:AnnotationProperty .
+skos:definition a owl:AnnotationProperty .
+skos:example a owl:AnnotationProperty .
+skos:note a owl:AnnotationProperty .
+cc:license a owl:AnnotationProperty .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+vs:term_status a owl:AnnotationProperty .
+<http://meta.schema.org/domainIncludes> a owl:AnnotationProperty .
+<http://meta.schema.org/rangeIncludes> a owl:AnnotationProperty .
+
+sosa:Vocabulary a voaf:Vocabulary, owl:Ontology ;
+  dcterms:title "Sensor, Observation, Sample, and Actuator (SOSA) Core Ontology"@en ;
+  dcterms:description """This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group."""@en ;
+  dcterms:creator [] ;
+  dcterms:contributor <http://maxime-lefrancois.info/me#> ;
+  dcterms:issued "2017-01-05"^^xsd:date ;
+  dcterms:modified "2017-02-03"^^xsd:date ;
+  dcterms:rights [] ;
+  cc:licence <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  vann:preferredNamespacePrefix "ssn" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/sosa/" ;
+  owl:versionInfo """This version is based on the horizontal/vertical modularization proposed in the W3C/OGC Spatial Data on the Web Working Group: http://w3c.github.io/sdw/ssn/#modularisation"""@en .
+
+
+## Features of interest and Property
+
+sosa:FeatureOfInterest a rdfs:Class , owl:Class ;
+  rdfs:label "Feature Of Interest"@en ;
+  rdfs:comment """The feature whose Property is being observed by a Sensor to arrive at a Result."""@en ;
+  skos:definition """SOSA: The feature whose Property is being observed by a Sensor to arrive at a Result.
+  SSN: A feature is an abstraction of real world phenomena (thing, person, event, etc)."""@en ;
+  skos:example """For example, when measuring the height of a tree, the height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest."""@en ;
+  dcterms:source """skos:exactMatch 'feature' [O&M]
+    http://www.opengeospatial.org/standards/om""" ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+sosa:Property a rdfs:Class , owl:Class ;
+  rdfs:label "Property"@en ;
+  rdfs:comment """An observable Quality of a Thing; typically of a FeatureOfInterest."""@en ;
+  skos:definition """SOSA: An observable quality of a real world phenomena (object,  person, or event), typically a FeatureOfInterest.
+  SSN: An observable Quality of an Event or Object.  That is, not a Quality of an abstract entity, but rather an aspect of an entity that is intrinsic to and cannot exist without the entity and that is observable by a sensor."""@en ;
+  dcterms:source """skos:exactMatch 'property' [O&M]
+		  http://www.opengeospatial.org/standards/om""" ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:hasProperty a owl:ObjectProperty ;
+    rdfs:label "has property"@en ;
+    skos:definition """Relation between a FeatureOfInterest and a Property of that feature."""@en ;
+    rdfs:domain sosa:FeatureOfInterest ;
+    rdfs:range sosa:Property ;
+    owl:inverseOf sosa:isPropertyOf ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:isPropertyOf a owl:ObjectProperty ;
+    rdfs:label "is property of"@en ;
+    skos:definition """Relation between a Property (a Quality observable by a sensor) and the FeatureOfInterest it belongs to."""@en ;
+    rdfs:domain sosa:Property ;
+    rdfs:range sosa:FeatureOfInterest ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+###### some link between FeatureOfInterest and Property ?
+
+
+## Features of interest and samples
+
+sosa:Sample a rdfs:Class , owl:Class ;
+  rdfs:label "Sample"@en ;
+  rdfs:comment """Feature on which Observations may be made, which is intended to be representative of a FeatureOfInterest that is not fully accessible."""@en ;
+  rdfs:comment """Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.
+
+A Sample is intended to sample some FeatureOfInterest in an application domain, so there is an expectation of at least one sampledFeature property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features."""@en ;
+  skos:definition """Feature on which Observations may be made, which is intended to be representative of a FeatureOfInterest that is not fully accessible."""@en ;
+  skos:example """A 'station' is essentially an identifiable locality where a sensor system or Process may be deployed and an observation made. In the context of the observation model, it connotes the 'world in the vicinity of the station', so the observed properties relate to the physical medium at the station, and not to any physical artifact such as a mooring, buoy, benchmark, monument, well, etc."""@en ;
+  skos:note """A transient sample, such as a ships-track or flight-line, might be identified and described, but is unlikely to be revisited exactly."""@en ;
+  rdfs:subClassOf sosa:FeatureOfInterest ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:hasSample a owl:ObjectProperty ;
+    rdfs:label "has sample"@en ;
+    rdfs:comment """Relation between a FeatureOfInterest and the Sample used to represent it."""@en ;
+    skos:definition """Relation between a FeatureOfInterest and the Sample used to represent it."""@en ;
+    rdfs:domain sosa:FeatureOfInterest ;
+    rdfs:range sosa:Sample ;
+    owl:inverseOf sosa:isSampleOf ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:isSampleOf a owl:ObjectProperty ;
+    rdfs:label "is sample of"@en ;
+    rdfs:comment """Relation from a Sample to the FeatureOfInterest that it is intended to be representative of."""@en ;
+    skos:definition """Relation from a Sample to the FeatureOfInterest that it is intended to be representative of."""@en ;
+    rdfs:domain sosa:Sample ;
+    rdfs:range sosa:FeatureOfInterest ;
+    owl:inverseOf sosa:hasSample ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+
+## Procedure
+
+sosa:Procedure a rdfs:Class , owl:Class ;
+  rdfs:label "Procedure"@en ;
+  rdfs:comment """A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many observations, samplings, or actuations. It explains the steps to be carried out to arrive at reproducible results."""@en ;
+  skos:definition """A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many observations, samplings, or actuations. It explains the steps to be carried out to arrive at reproducible results."""@en ;
+  skos:note """Many observations may be created via the same Procedure the same way as many tables are assembled using the same instructions (as information objects, not their concrete realization)."""@en ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:Sensing a rdfs:Class , owl:Class ;
+    rdfs:label "Sensing"@en ;
+    rdfs:comment """Sensing is a procedure that results in the estimation, or calculation, of the value of a Property."""@en ;
+    skos:definition """Sensing is a procedure that results in the estimation, or calculation, of the value of a Property."""@en ;
+    rdfs:subClassOf sosa:Procedure ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:Actuating a rdfs:Class , owl:Class ;
+    rdfs:label "Actuating"@en ;
+    rdfs:comment """Actuating is a procedure that results in having an impact on a Property in the physical world."""@en ;
+    skos:definition """Actuating is a procedure that results in having an impact on a Property in the physical world."""@en ;
+    rdfs:subClassOf sosa:Procedure ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+
+## Procedure executors
+
+sosa:ProcedureExecutor a rdfs:Class , owl:Class ;
+  rdfs:label "Procedure Executor"@en ;
+  rdfs:comment """Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Procedure executors respond to a stimulus, e.g., a change in the environment, and generate a result. Procedure executors can be mounted on Platforms."""@en ;
+  skos:definition """Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Procedure executors respond to a stimulus, e.g., a change in the environment, and generate a result. Procedure executors can be mounted on Platforms."""@en ;
+  skos:example """For example, a modern smart phone hosts multiple sensors and actuators."""@en ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:implementedBy a owl:ObjectProperty ;
+    rdfs:label "implemented by"@en ;
+    rdfs:comment """Relation between a Procedure and an entity that implements that procedure in some executable way."""@en ;
+    skos:definition """Relation between a Procedure and an entity that implements that procedure in some executable way."""@en ;
+    skos:example """For example, between a scientific measuring method and a sensor that senses via that method."""@en ;
+    rdfs:domain sosa:Procedure ;
+    rdfs:range sosa:ProcedureExecutor ;
+    owl:inverseOf sosa:implements ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:implements a owl:ObjectProperty ;
+    rdfs:label "implements"@en ;
+    rdfs:comment """Relation between an entity that implements a method in some executable way and the description of an algorithm, procedure or method."""@en ;
+    skos:definition """Relation between an entity that implements a method in some executable way and the description of an algorithm, procedure or method."""@en ;
+    skos:example """For example, between a Sensor and the scientific measuring method that the Sensor uses to observe a Property."""@en ;
+    rdfs:domain sosa:ProcedureExecutor ;
+    rdfs:range sosa:Procedure ;
+    owl:inverseOf sosa:implementedBy ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+### Sensor
+
+sosa:Sensor a rdfs:Class , owl:Class ;
+  rdfs:label "Sensor"@en ;
+  rdfs:comment """Device, agent (including humans), or software (simulation) involved in, or implementing, a sensing procedure. Sensors respond to a stimulus, e.g., a change in the environment, and generate a Result. Sensors can be mounted on Platforms."""@en ;
+  skos:definition """Device, agent (including humans), or software (simulation) involved in, or implementing, a sensing procedure. Sensors respond to a stimulus, e.g., a change in the environment, and generate a Result. Sensors can be mounted on Platforms."""@en ;
+  skos:example """For example, a modern smart phone hosts multiple sensors"""@en ;
+  rdfs:subClassOf sosa:ProcedureExecutor ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:observes a owl:ObjectProperty ;
+    rdfs:label "observes"@en ;
+    rdfs:comment """Relation between a Sensor and the Property it is capable of sensing. Also, relation between a Sensor and the Feature of Interest a property of which it is capable of sensing."""@en ;
+    skos:definition """Relation between a Sensor and the Property it is capable of sensing. Also, relation between a Sensor and the Feature of Interest a property of which it is capable of sensing."""@en ;
+    rdfs:domain sosa:Sensor ;
+    owl:inverseOf sosa:isObservedBy ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:isObservedBy a owl:ObjectProperty ;
+    rdfs:label "is observed by"@en ;
+    rdfs:comment """Relation between a Property and some Sensor able to observe it. Also, relation between a Feature Of Interest and some Sensor able to observe one of its properties."""@en ;
+    skos:definition """Relation between a Property and some Sensor able to observe it. Also, relation between a Feature Of Interest and some Sensor able to observe one of its properties."""@en ;
+    rdfs:range sosa:Sensor ;
+    owl:inverseOf sosa:observes ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+### Actuator
+
+sosa:Actuator a rdfs:Class , owl:Class ;
+  rdfs:label "Actuator"@en ;
+  rdfs:comment """A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."""@en ;
+  skos:definition """A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."""@en ;
+  rdfs:subClassOf sosa:ProcedureExecutor ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:actsOn a owl:ObjectProperty ;
+    rdfs:label "acts on"@en ;
+    rdfs:comment """Relation between an Actuator and the Property it is capable of acting on. Also, relation between an Actuator and the Feature of Interest a property of which it is capable of acting on."""@en ;
+    skos:definition """Relation between an Actuator and the Property it is capable of acting on. Also, relation between an Actuator and the Feature of Interest a property of which it is capable of acting on."""@en ;
+    rdfs:domain sosa:Actuator ;
+    owl:inverseOf sosa:isActedOnBy ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:isActedOnBy a owl:ObjectProperty ;
+    rdfs:label "is acted on by"@en ;
+    rdfs:comment """Relation between a Property and some Actuator able to act on it. Also, relation between a Feature Of Interest and some Actuator able to act on one of its properties."""@en ;
+    skos:definition """Relation between a Property and some Actuator able to act on it. Also, relation between a Feature Of Interest and some Actuator able to act on one of its properties."""@en ;
+    rdfs:range sosa:Actuator ;
+    owl:inverseOf sosa:actsOn ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+
+## Platform
+
+sosa:Platform a rdfs:Class , owl:Class ;
+  rdfs:label "Platform"@en ;
+  rdfs:comment """A device, (computational) system, or agent (including humans). A platform carries at least one Sensor, Actuator, or Sampling Device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."""@en ;
+  skos:definition """A device, (computational) system, or agent (including rdf:type rdfs:Class, owl:Class humans). A platform carries at least one Sensor, Actuator, or Sampling Device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."""@en ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:hostedBy a owl:ObjectProperty ;
+    rdfs:label "hosted by"@en ;
+    rdfs:comment """Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."""@en ;
+    skos:definition """Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."""@en ;
+    rdfs:domain sosa:ProcedureExecutor ;
+    rdfs:range sosa:Platform ;
+    owl:inverseOf sosa:hosts ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:hosts a owl:ObjectProperty ;
+    rdfs:label "hosts"@en ;
+    rdfs:comment """Relation between a Platform and a Sensor or Actuator hosted or mounted on it."""@en ;
+    skos:definition """Relation between a Platform and a Sensor or Actuator hosted or mounted on it."""@en ;
+    rdfs:domain sosa:Platform ;
+    rdfs:range sosa:ProcedureExecutor ;
+    owl:inverseOf sosa:hostedBy ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+
+## Procedure executions
+
+sosa:ProcedureExecution a rdfs:Class , owl:Class ;
+  rdfs:label "Procedure Execution"@en ;
+  rdfs:comment """Activity of carrying out a Procedure. Links to the procedure and to what executed it. The Command is the input of the procedure execution. The Result is the output of the procedure execution."""@en ;
+  skos:definition """Activity of carrying out a Procedure. Links to the procedure and to what executed it. The Command is the input of the procedure execution. The Result is the output of the procedure execution."""@en ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:executedBy a owl:ObjectProperty ;
+    rdfs:label "executed by"@en ;
+    rdfs:comment """Relation between a Procedure execution and the entity that executed that procedure."""@en ;
+    skos:definition """Relation between a Procedure and an entity that implements that procedure in some executable way."""@en ;
+    skos:example """For example, between a scientific measuring method and a sensor that senses via that method."""@en ;
+    rdfs:domain sosa:ProcedureExecution ;
+    rdfs:range sosa:ProcedureExecutor ;
+    owl:inverseOf sosa:executed ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:executed a owl:ObjectProperty ;
+    rdfs:label "executed"@en ;
+    rdfs:comment """Relation between an entity that implements a method in some executable way and the description of an algorithm, procedure or method."""@en ;
+    skos:definition """Relation between an entity that implements a method in some executable way and the description of an algorithm, procedure or method."""@en ;
+    skos:example """For example, between a Sensor and the scientific measuring method that the Sensor uses to observe a Property."""@en ;
+    rdfs:domain sosa:ProcedureExecutor ;
+    rdfs:range sosa:ProcedureExecution ;
+    owl:inverseOf sosa:executedBy ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:usedProcedure a owl:ObjectProperty ;
+    rdfs:label "used procedure"@en ;
+    rdfs:comment """Relation between a Procedure execution and the Procedure that was executed."""@en ;
+    skos:definition """Relation between a Procedure execution and the Procedure that was executed."""@en ;
+    rdfs:domain sosa:ProcedureExecution ;
+    rdfs:range sosa:Procedure ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+### Observation
+
+sosa:Observation a rdfs:Class , owl:Class ;
+  rdfs:label "Observation"@en ;
+  rdfs:comment """Activity of carrying out a Sensing Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to the sensing procedure and to the sensor that executed it; links to a Property to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with. The Result is the output of the observation."""@en ;
+  skos:definition """Activity of carrying out a Sensing Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to the sensing procedure and to the sensor that executed it; links to a Property to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with. The Result is the output of the observation."""@en ;
+  rdfs:subClassOf sosa:ProcedureExecution ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:observed a owl:ObjectProperty ;
+    rdfs:label "observed"@en ;
+    rdfs:comment """Relation between an Observation and the Property it has sensed. Also, relation between an Observation and the Feature of Interest a property of which it has sensed."""@en ;
+    skos:definition """Relation between an Observation and the Property it has sensed. Also, relation between an Observation and the Feature of Interest a property of which it has sensed."""@en ;
+    rdfs:domain sosa:Observation ;
+    owl:inverseOf sosa:wasObservedBy ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:wasObservedBy a owl:ObjectProperty ;
+    rdfs:label "was observed by"@en ;
+    rdfs:comment """Relation between a Property and some Observation that observed it. Also, relation between a Feature Of Interest and some Observation that observed one of its properties."""@en ;
+    skos:definition """Relation between a Property and some Observation that observed it. Also, relation between a Feature Of Interest and some Observation that observed one of its properties."""@en ;
+    rdfs:range sosa:Observation ;
+    owl:inverseOf sosa:observed ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+### Actuation
+
+sosa:Actuation a rdfs:Class , owl:Class ;
+  rdfs:label "Actuation"@en ;
+  rdfs:comment """An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."""@en ;
+  skos:definition """An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."""@en ;
+  rdfs:subClassOf sosa:ProcedureExecution ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:actedOn a owl:ObjectProperty ;
+    rdfs:label "acted on"@en ;
+    rdfs:comment """Relation between an Actuation and the Property it has acted on. Also, relation between an Actuation and the Feature of Interest a property of which it has acted on."""@en ;
+    skos:definition """Relation between an Actuation and the Property it has acted on. Also, relation between an Actuation and the Feature of Interest a property of which it has acted on."""@en ;
+    rdfs:domain sosa:Actuation ;
+    owl:inverseOf sosa:wasActedOnBy ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+  sosa:wasActedOnBy a owl:ObjectProperty ;
+    rdfs:label "was acted on by"@en ;
+    rdfs:comment """Relation between a Property and some Actuation that acted on it. Also, relation between a Feature Of Interest and some Actuation that acted on one of its properties."""@en ;
+    skos:definition """Relation between a Property and some Actuation that acted on it. Also, relation between a Feature Of Interest and some Actuation that acted on one of its properties."""@en ;
+    rdfs:range sosa:Actuation ;
+    owl:inverseOf sosa:actedOn ;
+    rdfs:isDefinedBy sosa:Vocabulary .
+
+
+## Phenomenon time
+
+sosa:phenomenonTime a owl:ObjectProperty ;
+  rdfs:label "phenomenon time"@en ;
+  rdfs:comment """The time that the Result of a procedure execution applies to the FeatureOfInterest. Not necessarily the same as the result-time. May be an interval or an instant, or some other compound temporal entity."""@en ;
+  skos:definition """The time that the Result of a procedure execution applies to the FeatureOfInterest. Not necessarily the same as the result-time. May be an interval or an instant, or some other compound temporal entity."""@en ;
+  skos:example """TODO: Need example here"""@en ;
+  rdfs:domain sosa:ProcedureExecution ;
+  rdfs:range time:TemporalEntity ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+
+## Command
+
+sosa:hasCommand a owl:ObjectProperty ;
+  rdfs:label "has command"@en ;
+  rdfs:comment """Relation linking a Procedure Execution to its command, for instance a quantity value described using the QUDT ontology."""@en ;
+  skos:definition """Relation linking a Procedure Execution to its command, for instance a quantity value described using the QUDT ontology."""@en ;
+  rdfs:domain sosa:ProcedureExecution ;
+  rdfs:isDefinedBy sosa:Vocabulary .
+
+## Result
+
+sosa:hasResult a owl:ObjectProperty ;
+  rdfs:label "has result"@en ;
+  rdfs:comment """Relation linking a Procedure Execution to its result, for instance a quantity value described using the QUDT ontology."""@en ;
+  rdfs:comment """Relation linking a Procedure Execution to its result, for instance a quantity value described using the QUDT ontology."""@en ;
+  rdfs:domain sosa:ProcedureExecution ;
+  rdfs:isDefinedBy sosa:Vocabulary .
