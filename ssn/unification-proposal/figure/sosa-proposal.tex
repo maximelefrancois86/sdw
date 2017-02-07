@@ -1,0 +1,158 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+\usepackage[T3,T1]{fontenc}
+
+
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% Style packages
+\usepackage{helvet}
+\usepackage{pifont}
+\usepackage{amsmath,amsfonts,mathabx,stmaryrd}
+\usepackage{color,xcolor}
+\usepackage{calculator}
+\DeclareUnicodeCharacter{20AC}{\euro}
+\usepackage{url}
+\usepackage{xspace}
+
+\usepackage[active,tightpage]{preview}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+\usetikzlibrary{trees}
+\newcommand{\why}{{\color{red} ???}}
+
+
+\begin{tikzpicture}[
+  ssn/.style={color=black!60!green},
+  ssnr/.style={color=black!60!green},
+  ssnl/.style={scale=0.8,color=black!60!green},
+  sosa/.style={color=black!60!blue},
+  sosar/.style={color=black!60!blue},
+  sosal/.style={scale=0.8,color=black!60!blue},
+  first/.style={level distance=6ex},
+  second/.style={level distance=12ex},
+  third/.style={level distance=18ex},
+  level 1/.style={sibling distance=5em}]
+
+
+  % FeatureOfInterest and Sample
+  \draw[style=dashed] (-3,-8) rectangle (10,-5);
+  \node[sosa,anchor=north west] (FeatureOfInterest) at (-3,-5.5) {sosa:FeatureOfInterest} ;
+  \node[sosa,anchor=south east] (Sample) at (2,-8) {sosa:Sample} ;
+  \node[sosa,anchor=north west] (Property) at (7.5,-5.5) {sosa:Property} ;
+
+  \draw[sosa,-open triangle 90] (Sample) -- (Sample -| FeatureOfInterest) -- (FeatureOfInterest) ;
+  \draw[sosar] ($(FeatureOfInterest.south)+(1,0)$) to[bend left = 20]
+    node[sosal,right,pos=0.35] {$\blacktriangleup$ sosa:isSampleOf }
+    node[sosal,right,pos=0.65] {$\blacktriangledown$ sosa:hasSample }
+  (Sample);
+
+
+  % Property
+  \draw[sosar] (FeatureOfInterest.east) to[bend left=3]
+    node[sosal,above,sloped] {sosa:hasProperty $\blacktriangleright$}
+    node[sosal,below,sloped] {$\blacktriangleleft$ sosa:isPropertyOf}
+  (Property.west);
+
+
+  % ProcedureExecution
+  \draw[style=dashed] (-3,-1) rectangle (3,1);
+  \node[sosa] (ProcedureExecution) at (0,.5) {sosa:ProcedureExecution} ;
+  \node[sosa,anchor=east] (Actuation) at (-0.2,-.5) {sosa:Actuation} ;
+  \node[sosa,anchor=west] (Observation) at (0.2,-.5) {sosa:Observation} ;
+  \draw[sosa,-open triangle 90] (Actuation) -- (Actuation -| ProcedureExecution) -- (ProcedureExecution) ;
+  \draw[sosa,-open triangle 90] (Observation) -- (Observation -| ProcedureExecution) -- (ProcedureExecution) ;
+
+  % ProcedureExecutor
+  \draw[style=dashed] (5.3,-1) rectangle (10.3,1);
+  \node[sosa] (ProcedureExecutor) at (8,.5) {sosa:ProcedureExecutor} ;
+  \node[sosa,anchor=east] (Actuator) at (7.8,-.5) {sosa:Actuator} ;
+  \node[sosa,anchor=west] (Sensor) at (8.2,-.5) {sosa:Sensor} ;
+  \draw[sosa,-open triangle 90] (Actuator) -- (Actuator -| ProcedureExecutor) -- (ProcedureExecutor) ;
+  \draw[sosa,-open triangle 90] (Sensor) -- (Sensor -| ProcedureExecutor) -- (ProcedureExecutor) ;
+
+  % Procedure
+  \draw[style=dashed] (1.2,2.5) rectangle (6.5,4.5);
+  \node[sosa] (Procedure) at (4,4) {sosa:Procedure} ;
+  \node[sosa,anchor=east] (Actuating) at (3.8,3) {sosa:Actuating} ;
+  \node[sosa,anchor=west] (Sensing) at (4.2,3) {sosa:Sensing} ;
+  \draw[sosa,-open triangle 90] (Actuating) -- (Actuating -| Procedure) -- (Procedure) ;
+  \draw[sosa,-open triangle 90] (Sensing) -- (Sensing -| Procedure) -- (Procedure) ;
+
+  % ProcedureExecution to ProcedureExecutor
+  \draw[sosar] (3,0) to[bend right=3]
+    node[sosal,below] {$\blacktriangleleft$ sosa:generated }
+    node[sosal,above] {sosa:wasGeneratedBy $\blacktriangleright$}
+  (5.3,0);
+
+  % ProcedureExecution to Procedure
+  \draw[sosar] (2,1) to[bend left=10]
+    node[sosal,left] {sosa:usedProcedure $\blacktriangleup$}
+  (2.5,2.5);
+
+  % ProcedureExecutor to Procedure
+  \draw[sosar] (6,1) to[bend right=10]
+    node[sosal,left,pos=0.35] {sosa:isImplementedBy $\blacktriangledown$}
+    node[sosal,left,pos=0.65] {sosa:implements $\blacktriangleup$}
+  (5.5,2.5);
+
+  % ProcedureExecution to phenomenonTime
+  \node[color=black,anchor=east] (TemporalEntity) at (-7,1.2) {time:TemporalEntity} ;
+  \draw[sosar] (-3,0.6) to[bend right=10]
+    node[sosal,above] {$\blacktriangleleft$ sosa:phenomenonTime }
+  (TemporalEntity.east);
+
+  % ProcedureExecution to command
+  \node[sosa,anchor=east] (Command) at (-7,0) {owl:Thing} ;
+  \draw[sosar] (-3,-0.4) to[bend right=10]
+    node[sosal,above] {$\blacktriangleleft$ sosa:hasCommand }
+  (Command.east);
+
+  % ProcedureExecution to result
+  \node[sosa,anchor=east] (Result) at (-7,-1) {owl:Thing} ;
+  \draw[sosar] (-3,-0.6) to[bend left=10]
+    node[sosal,below] {$\blacktriangleleft$ sosa:hasResult }
+  (Result.east);
+
+  % Platform
+  \node[color=black] (Platform) at (9,4) {sosa:Platform} ;
+  \draw[sosar,bend right=10] (8,1) to
+    node[sosal,right,pos=.4] {$\blacktriangledown$ sosa:hostedBy }
+    node[sosal,right,pos=.6] {$\blacktriangleup$ sosa:hosts }
+  (Platform);
+
+
+  % Actuation to FeatureOfInterest and Property
+  \draw[sosar,bend right=2] (Actuation) to
+    node[sosal,left,pos=0.45] {sosa:wasActedOnBy $\blacktriangleup$}
+    node[sosal,left,pos=0.55] {sosa:actedOn $\blacktriangledown$}
+  ($(Actuation)-(0,4.5)$) ;
+
+  % Observation to FeatureOfInterest and Property
+  \draw[sosar,bend right=2] (Observation) to
+    node[sosal,left,pos=0.45] {sosa:wasObservedBy $\blacktriangleup$}
+    node[sosal,left,pos=0.55] {sosa:observed $\blacktriangledown$}
+  ($(Observation)-(0,4.5)$) ;
+
+  % Actuator to FeatureOfInterest and Property
+  \draw[sosar,bend right=2] ($(Actuator.south)-(0.5,0)$) to[bend left]
+    node[sosal,left,pos=0.45] {sosa:isActedOnBy $\blacktriangleup$}
+    node[sosal,left,pos=0.55] {sosa:actsOn $\blacktriangledown$}
+  ($(Actuator)-(0.5,4.5)$) ;
+
+  % Sensor to FeatureOfInterest and Property
+  \draw[sosar,bend right=2] (Sensor) to[bend left]
+    node[sosal,left,pos=0.45] {sosa:isObservedBy $\blacktriangleup$}
+    node[sosal,left,pos=0.55] {sosa:observes $\blacktriangledown$}
+  ($(Sensor)-(0,4.5)$) ;
+
+
+
+
+\end{tikzpicture}
+\end{document}

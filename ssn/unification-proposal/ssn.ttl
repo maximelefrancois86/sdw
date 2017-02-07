@@ -11,7 +11,9 @@
 @prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 
+@prefix oldssn: <http://purl.oclc.org/NET/ssnx/ssn#>.
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
 @base <http://www.w3.org/ns/ssn/> .
 
 voaf:Vocabulary a owl:Class .
@@ -27,11 +29,11 @@ dcterms:source a owl:AnnotationProperty .
 skos:definition a owl:AnnotationProperty .
 skos:example a owl:AnnotationProperty .
 skos:note a owl:AnnotationProperty .
-cc:license a owl:AnnotationProperty .
+cc:licence a owl:AnnotationProperty .
 vann:preferredNamespacePrefix a owl:AnnotationProperty .
 vann:preferredNamespaceUri a owl:AnnotationProperty .
 
-sosa:Ontology a voaf:Vocabulary, owl:Ontology ;
+ssn: a voaf:Vocabulary, owl:Ontology ;
   dcterms:title "Semantic Sensor Network Ontology"@en ;
   dcterms:description """This ontology describes sensors and observations, and related concepts.  It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports."""@en ;
   dcterms:creator [] ;
@@ -43,7 +45,7 @@ sosa:Ontology a voaf:Vocabulary, owl:Ontology ;
   dcterms:publisher "W3C Semantic Sensor Network Incubator Group"@en ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/" ;
   dcterms:rights "Copyright 2009 - 2017 W3C." ;
-  cc:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  cc:licence <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
   vann:preferredNamespacePrefix "ssn" ;
   vann:preferredNamespaceUri "http://www.w3.org/ns/ssn/" ;
   owl:imports sosa:Vocabulary , sosa:DeploymentOntology , sosa:SurvivalOntology , sosa:OperatingOntology , sosa:MeasurementOntology ;
@@ -74,7 +76,7 @@ sosa:Sample
 
   # sosa:hasSample is fully described in sosa:Vocabulary
 
-  sosa:isSampleOf a owl:FunctionalProperty
+  sosa:isSampleOf a owl:FunctionalProperty ;
     rdfs:comment """Something can be a sample of at most one feature of interest."""@en .
 
 
@@ -91,13 +93,13 @@ sosa:Procedure a owl:Class ;
     rdfs:label "has input"@en;
     rdfs:comment """Relation between a Procedure and the description of the information that is provided for its execution."""@en ;
     rdfs:domain sosa:Procedure ;
-    rdfs:isDefinedBy sosa:Ontology .
+    rdfs:isDefinedBy ssn: .
 
   sosa:hasOutput a owl:ObjectProperty ;
     rdfs:label "has output"@en ;
     rdfs:comment """Relation between a Procedure and the description of the information that is reported from its execution."""@en ;
     rdfs:domain sosa:Procedure ;
-    rdfs:isDefinedBy sosa:Ontology .
+    rdfs:isDefinedBy ssn: .
 
 ## Procedure executors
 
@@ -105,29 +107,109 @@ sosa:Procedure a owl:Class ;
 
 sosa:Sensor
   rdfs:subClassOf [ owl:onProperty sosa:implements ; owl:someValuesFrom sosa:Sensing ] ;
+  owl:equivalentClass [ owl:onProperty sosa:implements ; owl:someValuesFrom sosa:Sensing ] ;
   rdfs:subClassOf [ owl:onProperty sosa:detects ; owl:allValuesFrom sosa:Stimulus ] .
 
     sosa:observes
-      rdfs:comment """If a sensor observes a property, then it also observes the feature of interest this property belongs to"""@en ;
+      rdfs:comment """If a sensor observes a property, then it also observes the feature of interest this property belongs to."""@en ;
       owl:propertyChainAxiom ( sosa:observes sosa:isPropertyOf ) ;
       owl:propertyChainAxiom ( sosa:generated sosa:observed ) ;
-      owl:propertyChainAxiom ( oldssn:hasMeasurementCapability oldssn:forProperty ) ; # example ?
-      owl:propertyChainAxiom ( oldssn:madeObservation oldssn:observedProperty ) . # example ?
+      owl:propertyChainAxiom ( oldssn:hasMeasurementCapability oldssn:forProperty ) . # example ?
 
 
 ### Actuator
 
 sosa:Actuator
-  rdfs:comment """An actuator is a device that implements some actuating process."""@en ;
   rdfs:subClassOf [ owl:onProperty sosa:implements ; owl:someValuesFrom sosa:Actuating ] ;
   owl:equivalentClass [ owl:onProperty sosa:implements ; owl:someValuesFrom sosa:Actuating ] .
 
-    sosa:actsOn owl:propertyChainAxiom ( sosa:actsOn sosa:isPropertyOf ) ;
-      rdfs:comment """If an actuator acts on a property, then it also acts on the feature of interest this property belongs to"""@en ;
-      sosa:actsOn owl:propertyChainAxiom ( sosa:generated sosa:actedOn ) .
+    sosa:actsOn
+      rdfs:comment """If an actuator acts on a property, then it also acts on the feature of interest this property belongs to."""@en ;
+      owl:propertyChainAxiom ( sosa:actsOn sosa:isPropertyOf ) ;
+      owl:propertyChainAxiom ( sosa:generated sosa:actedOn ) ;
+      owl:propertyChainAxiom ( oldssn:hasActuationCapability oldssn:forProperty ) . # example ?
+
 
 ## Platform.
 
+sosa:Platform
+  rdfs:subClassOf [ owl:onProperty oldssn:attachedSystem ; owl:allValuesFrom oldssn:System ] ;
+  rdfs:subClassOf [ owl:onProperty oldssn:inDeployment ; owl:allValuesFrom oldssn:Deployment ] .
+
+
+## Procedure executions
+
+sosa:implements owl:propertyChainAxiom ( sosa:generated sosa:usedProcedure ) .
+
+sosa:Observation
+  rdfs:subClassOf [
+    owl:onProperty oldssn:featureOfInterest ;
+    owl:allValuesFrom oldssn:FeatureOfInterest ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:observationResult ;
+    owl:allValuesFrom oldssn:SensorOutput ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:observedBy ;
+    owl:allValuesFrom oldssn:Sensor ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:observedProperty ;
+    owl:allValuesFrom oldssn:Property ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:sensingMethodUsed ;
+    owl:allValuesFrom oldssn:Sensing ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:featureOfInterest ;
+    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass oldssn:FeatureOfInterest ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:observedBy ;
+    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass oldssn:Sensor ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:observedProperty ;
+    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass oldssn:Property ] ;
+  rdfs:subClassOf [
+    owl:onProperty oldssn:sensingMethodUsed ;
+    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass oldssn:Sensing ] .
+
+sosa:observed owl:propertyChainAxiom ( sosa:observed sosa:isPropertyOf ) .
+
+sosa:actedOn owl:propertyChainAxiom ( sosa:actedOn sosa:isPropertyOf ) .
+
+## Stimulus
+
+ssn:Stimulus a owl:Class ;
+  rdfs:label "Stimulus"@en ;
+  skos:definition """An Event in the real world that 'triggers' the sensor.  The properties associated to the stimulus may be different to eventual observed property.  The event, not the object, triggers the sensor."""@en ;
+  rdfs:subClassOf [ owl:onProperty ssn:isProxyFor ; owl:allValuesFrom sosa:Property ] ;
+  rdfs:isDefinedBy ssn: .
+
+  ssn:detects a owl:ObjectProperty ;
+    rdfs:label "detects"@en ;
+    skos:definition """A relation from a sensor to the Stimulus that the sensor can detect.
+  The Stimulus itself will be serving as a proxy for (see isProxyOf) some observable property."""@en ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:isProxyFor a owl:ObjectProperty ;
+    rdfs:label "is proxy for"@en ;
+    skos:definition """A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for.  For example, the expansion of quicksilver is a stimulus that serves as a proxy for temperature. An increase or decrease in the velocity of spinning cups on a wind sensor is serving as a proxy for wind speed."""@en ;
+    rdfs:isDefinedBy ssn: .
+
+## Result
+
+sosa:Result
+  rdfs:subClassOf [ owl:onProperty sosa:wasGeneratedBy ; owl:someValuesFrom sosa:ProcedureExecutor ] .
+#  rdfs:subClassOf [ owl:onProperty sosa:wasGeneratedBy ; owl:someValuesFrom ssn:Sensor ] .
+#  rdfs:subClassOf [ owl:onProperty ssn:hasValue ; owl:someValuesFrom ssn:ObservationValue ] ; # now SensorOutput and Observation collapsed, this is not true a
+
+
+
+
+##### I did not go further than this.
+
+###### ISSUE: stimulus and effect replaced by hasCommand and hasResult
 
 sosa:SensingDevice a owl:Class ;
   rdfs:subClassOf sosa:Device ,
@@ -137,16 +219,6 @@ sosa:SensingDevice a owl:Class ;
   rdfs:isDefinedBy sosa:Ontology ;
   rdfs:label "Sensing Device" ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#Measuring" .
-
-
-sosa:Platform
-  rdfs:comment """A platform only hosts systems."""@en ;
-  rdfs:subClassOf [ owl:onProperty sosa:hosts ; owl:allValuesFrom sosa:System ] .
-
-##### I did not go further than this.
-
-###### ISSUE: stimulus and effect replaced by hasCommand and hasResult
-
 
 sosa:observationResult a owl:ObjectProperty ;
   dcterms:source """skos:closeMatch 'result' [O&M - ISO/DIS 19156]
@@ -214,55 +286,43 @@ sosa:Device a owl:Class ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Device#Device" .
 
 sosa:Observation a owl:Class ;
-  rdfs:subClassOf [ a owl:Restriction ;
-  owl:onProperty sosa:featureOfInterest ;
+  rdfs:subClassOf [   owl:onProperty sosa:featureOfInterest ;
   owl:allValuesFrom sosa:FeatureOfInterest
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:observationResult ;
+  [   owl:onProperty sosa:observationResult ;
   owl:allValuesFrom sosa:SensorOutput
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:observedBy ;
+  [   owl:onProperty sosa:observedBy ;
   owl:allValuesFrom sosa:Sensor
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:observedProperty ;
+  [   owl:onProperty sosa:observedProperty ;
   owl:allValuesFrom sosa:Property
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:sensingMethodUsed ;
+  [   owl:onProperty sosa:sensingMethodUsed ;
   owl:allValuesFrom sosa:Sensing
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:observationResultTime ;
+  [   owl:onProperty sosa:observationResultTime ;
   owl:minCardinality "0"^^xsd:nonNegativeInteger
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:observationSamplingTime ;
+  [   owl:onProperty sosa:observationSamplingTime ;
   owl:minCardinality "0"^^xsd:nonNegativeInteger
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:qualityOfObservation ;
+  [   owl:onProperty sosa:qualityOfObservation ;
   owl:minCardinality "0"^^xsd:nonNegativeInteger
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:featureOfInterest ;
+  [   owl:onProperty sosa:featureOfInterest ;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
   owl:onClass sosa:FeatureOfInterest
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:observedBy ;
+  [   owl:onProperty sosa:observedBy ;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
   owl:onClass sosa:Sensor
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:observedProperty ;
+  [   owl:onProperty sosa:observedProperty ;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
   owl:onClass sosa:Property
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:sensingMethodUsed ;
+  [   owl:onProperty sosa:sensingMethodUsed ;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
   owl:onClass sosa:Sensing
   ] ;
@@ -311,16 +371,13 @@ See comments at ObservationValue.""" ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
 
 sosa:System a owl:Class ;
-  rdfs:subClassOf [ a owl:Restriction ;
-  owl:onProperty sosa:hasSubSystem ;
+  rdfs:subClassOf [   owl:onProperty sosa:hasSubSystem ;
   owl:someValuesFrom sosa:System
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:hasSubSystem ;
+  [   owl:onProperty sosa:hasSubSystem ;
   owl:allValuesFrom sosa:System
   ] ,
-  [ a owl:Restriction ;
-  owl:onProperty sosa:onPlatform ;
+  [   owl:onProperty sosa:onPlatform ;
   owl:allValuesFrom sosa:Platform
   ] ;
   dcterms:source "http://www.w3.org/2005/Incubator/ssn/" ;
